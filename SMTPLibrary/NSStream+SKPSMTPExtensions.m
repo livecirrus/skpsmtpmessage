@@ -29,13 +29,16 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 //  OTHER DEALINGS IN THE SOFTWARE.
 //
+//  Modified by LiveCirrus on 7/2/13 to support ARC:
+//  https://github.com/livecirrus/skpsmtpmessage/tree/arc
+//
 
 #import "NSStream+SKPSMTPExtensions.h"
 
 
 @implementation NSStream (SKPSMTPExtensions)
 
-+ (void)getStreamsToHostNamed:(NSString *)hostName port:(NSInteger)port inputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream
++ (void)getStreamsToHostNamed:(NSString *)hostName port:(NSInteger)port inputStream:(NSInputStream * __strong *)inputStream outputStream:(NSOutputStream * __strong *)outputStream
 {
     CFHostRef           host;
     CFReadStreamRef     readStream;
@@ -44,7 +47,7 @@
     readStream = NULL;
     writeStream = NULL;
     
-    host = CFHostCreateWithName(NULL, (CFStringRef) hostName);
+    host = CFHostCreateWithName(NULL, (__bridge CFStringRef) hostName);
     if (host != NULL) 
     {
         (void) CFStreamCreatePairWithSocketToCFHost(NULL, host, port, &readStream, &writeStream);
@@ -60,7 +63,7 @@
     } 
     else 
     {
-        *inputStream = [(NSInputStream *) readStream autorelease];
+        *inputStream = (__bridge_transfer NSInputStream *) readStream;
     }
     if (outputStream == NULL) 
     {
@@ -71,7 +74,7 @@
     } 
     else 
     {
-        *outputStream = [(NSOutputStream *) writeStream autorelease];
+        *outputStream = (__bridge_transfer NSOutputStream *) writeStream;
     }
 }
 

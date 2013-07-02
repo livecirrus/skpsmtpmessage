@@ -29,12 +29,15 @@
 //  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 //  OTHER DEALINGS IN THE SOFTWARE.
 //
+//  Modified by LiveCirrus on 7/2/13 to support ARC:
+//  https://github.com/livecirrus/skpsmtpmessage/tree/arc
+//
 
 #import <CFNetwork/CFNetwork.h>
 #import <Foundation/NSStream.h>
 
 @interface NSStream (SKPSMTPExtensions)
 
-+ (void)getStreamsToHostNamed:(NSString *)hostName port:(NSInteger)port inputStream:(NSInputStream **)inputStream outputStream:(NSOutputStream **)outputStream;
++ (void)getStreamsToHostNamed:(NSString *)hostName port:(NSInteger)port inputStream:(NSInputStream * __strong *)inputStream outputStream:(NSOutputStream * __strong *)outputStream;
 
 @end
